@@ -1,0 +1,32 @@
+import numpy as np
+
+# Key matrix (3x3)
+key = np.array([[6, 24, 1],
+                [13, 16, 10],
+                [20, 17, 15]])
+
+# Function to perform Hill cipher encryption
+def hill_encrypt(message):
+    block_size = 3
+    encrypted = []
+
+    # Pad the message if its length is not a multiple of the block size
+    padding = (block_size - len(message) % block_size) % block_size
+    message += 'a' * padding
+
+    for i in range(0, len(message), block_size):
+        block = [ord(char) - ord('a') for char in message[i:i+block_size]]
+        encrypted_block = np.dot(key, block) % 26
+        encrypted += [chr(val + ord('a')) for val in encrypted_block]
+
+    return ''.join(encrypted)
+
+def main():
+    message = "meet me at the usual place at ten rather than eight oclock"
+    encrypted_message = hill_encrypt(message)
+
+    print("Original Message:", message)
+    print("Encrypted Message:", encrypted_message)
+
+if _name_ == "_main_":
+    main()
