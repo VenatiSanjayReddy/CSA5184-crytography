@@ -1,0 +1,23 @@
+from Crypto.Cipher import DES
+import binascii
+
+def des_decrypt(ciphertext, key):
+    # Note: DES is not secure, this is for educational purposes only.
+    cipher = DES.new(key, DES.MODE_ECB)  # Using Electronic Codebook mode
+    return cipher.decrypt(ciphertext)
+
+def main():
+    key = b'01234567'  # DES requires an 8-byte key
+    encrypted_message = b'abcd' * 2  # Dummy 64-bit ciphertext
+
+    decrypted_message = des_decrypt(encrypted_message, key)
+
+    # Ensure that the decrypted bytes are decodable as UTF-8 before printing.
+    # This is a rudimentary check.
+    if all(32 <= byte < 127 for byte in decrypted_message):
+        print("Decrypted message:", decrypted_message.decode('utf-8'))
+    else:
+        print("Decryption produced non-printable characters:", binascii.hexlify(decrypted_message))
+
+if _name_ == "_main_":
+    main()
